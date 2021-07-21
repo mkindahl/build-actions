@@ -1,0 +1,7 @@
+# Tools files
+*.rej
+*.orig
+
+# Editor files
+*~
+\#*#

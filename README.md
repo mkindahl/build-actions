@@ -1,2 +1,5 @@
-# build-actions
-GitHub actions for release pipelines (building, publishing, checking, etc.)
+# Timescale GitHub Build Actions
+
+GitHub actions for release pipelines, for example, for creating
+packages, publishing packages, checking packages, etc.
+
