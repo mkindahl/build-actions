@@ -1,0 +1,41 @@
+name: Build and Publish TimescaleDB Docker Image
+description: Build a TimescaleDB Docker image ready for publishing
+inputs:
+  previous_timescaledb_version:
+    description: Previous TimescaleDB version
+    required: true
+  timescaledb_version:
+    description: TimescaleDB version to publish
+    required: true
+  postgresql_version:
+    description: PostgreSQL version
+    required: true
+  tools_version:
+    description: Version ot the tools to include
+    default: '0.8.1'
+    required: false
+  tags:
+    description: 'Tags to use for the image, for example timescale/timescaledb:1.2.3-pg12'
+    required: true
+  platform:
+    description: Platform for the image
+    required: true
+  push:
+    description: Push the image
+    default: false
+outputs:
+  tag:
+    description: Docker image name
+runs:
+  using: "composite"
+  steps:
+    - run: $GITHUB_ACTION_PATH/docker-build.sh 
+      shell: bash
+      env:
+        PUSH: ${{ inputs.push }}
+        PLATFORM: ${{ inputs.platform }}
+        PG_VERSION: ${{ inputs.postgresql_version }}
+        TAGS: ${{ inputs.tags }}
+        PREV_TS_VERSION: ${{ inputs.previous_timescaledb_version }}
+        TIMESCALEDB_VERSION: ${{ inputs.timescaledb_version }}
+        TOOLS_VERSION: ${{ inputs.tools_version }}
