@@ -1,0 +1,55 @@
+name: Create Debian Package 
+description: Create a debian package from a PGX build
+inputs:
+  package:
+    description: Package name
+    required: true
+  version:
+    description: Version of the package
+    required: true
+  architecture:
+    description: Architecture
+    required: true
+    default: all
+  maintainer:
+    description: Maintainer e-mail address
+    required: true
+  path:
+    description: Path to package files
+    required: true
+  description:
+    description: Description of package
+    required: true
+  homepage_url:
+    description: Homepage URL for the package
+    required: true
+  dependencies:
+    description: Dependencies in Debian format
+    required: false
+  os_name:
+    descripition: Operating system name
+    required: false
+  os_release:
+    descripition: Operating system release version
+    required: false
+  path:
+    description: Path to package files
+    required: true
+outputs:
+  path:
+    description: Path to packages
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    PACKAGE: ${{ inputs.package }}
+    VERSION: ${{ inputs.version }}
+    MAINTAINER: ${{ inputs.maintainer }}
+    DESCRIPTION: ${{ inputs.description }}
+    HOMEPAGE_URL: ${{ inputs.homepage_url }}
+    ARCH: ${{ inputs.architecture }}
+    DEPENDS: ${{ inputs.dependencies }}
+    OS_NAME: ${{ inputs.os_name }}
+    OS_RELEASE: ${{ inputs.os_relase }}
+  args: 
+    - ${{ inputs.path }}
