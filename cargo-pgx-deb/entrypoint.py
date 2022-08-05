@@ -14,18 +14,22 @@
 # The following environment variables need to be passed and should be
 # set in the ``action.yml`` specification based on input parameters:
 #
+# PACKAGE: The package name
+#
+# VERSION: The package version in the form major.minor.patch
+# 
+# DESCRIPTION: A description text for the package. It will be wrapped
+#     if necessary.
+#
 # ARCH: Architecture, typically found by calling "uname -m", but note
 #     that we can only use names available in "dpkg-architecture -L",
 #     so you need to translate to an architecture on the list.
 #
-# DEPENDS: Dependencies as a comma-separated list of dependencies.
-#
-# DESCRIPTION: A description text for the package. It will be wrapped
-#     if necessary.
+# MAINTAINER: Name and e-mail of the maintainer
 #
 # HOMEPAGE_URL: The URL of the homepage for the package.
 #
-# MAINTAINER: Name and e-mail of the maintainer
+# DEPENDS: Dependencies as a comma-separated list of dependencies.
 #
 # OS_NAME: Name of the operating system or distro. If not set, output
 #     of "lsb_release -si" will be used.
@@ -36,8 +40,6 @@
 # PATH: The path need to include the ``pg_config`` to use when
 #     building. It will be used to figure out the PostgreSQL version
 #     that we are building for.
-#
-# VERSION: The toolkit version in the form major.minor-patch
 
 import os
 import sys
@@ -98,8 +100,8 @@ def make_rules_file():
 def make_install_file():
     """Make the install file.
     """
-    with open("debian/install") as f:
-        f.write(f"{DIRECTORY}/usr/* usr/")
+    with open(f"debian/install", "w") as f:
+        f.write(f"{TREE}/usr/* usr/\n")
 
 def build_package():
     """Build the package.
@@ -145,6 +147,7 @@ if __name__ == '__main__':
     MAINTAINER = os.environ['MAINTAINER']
     PACKAGE = os.environ['PACKAGE']
     VERSION = os.environ['VERSION']
+    TREE = os.environ['TREE']
 
     # Compute some defaults if they do not exist.
     OS_NAME = (os.environ.get('OS_NAME')
@@ -152,7 +155,6 @@ if __name__ == '__main__':
     OS_RELEASE = (os.environ.get('OS_NAME')
                   or getoutput("lsb_release -sr").lower())
 
-    TARGET_DIRECTORY = f"target/release/{PACKAGE}"
     DATE = getoutput("TZ=Etc/UTC date -R")
 
     # Figure out the PostgreSQL version using pg_config

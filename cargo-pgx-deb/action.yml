@@ -1,39 +1,42 @@
 name: Create Debian Package 
-description: Create a debian package from a PGX build
+description: |
+  Create a debian package files. The resulting files will be placed in
+  the "_packages" directory.
 inputs:
   package:
-    description: Package name
+    description: Package name.
     required: true
   version:
-    description: Version of the package
+    description: Version of the package.
     required: true
   architecture:
-    description: Architecture
+    description: |
+      Architecture. Has to be one listed by "dpkg-architecture -L"
     required: true
     default: all
   maintainer:
-    description: Maintainer e-mail address
+    description: Maintainer e-mail address.
     required: true
   path:
-    description: Path to package files
+    description: Path to package files.
     required: true
   description:
-    description: Description of package
+    description: Description of package.
     required: true
   homepage_url:
-    description: Homepage URL for the package
+    description: Homepage URL for the package.
     required: true
   dependencies:
-    description: Dependencies in Debian format
+    description: Dependencies in Debian format.
     required: false
   os_name:
-    descripition: Operating system name
+    descripition: Operating system name.
     required: false
   os_release:
-    descripition: Operating system release version
+    descripition: Operating system release version.
     required: false
-  path:
-    description: Path to package files
+  tree:
+    description: Path to tree containing the package.
     required: true
 outputs:
   path:
@@ -52,4 +55,4 @@ runs:
     OS_NAME: ${{ inputs.os_name }}
     OS_RELEASE: ${{ inputs.os_relase }}
   args: 
-    - ${{ inputs.path }}
+    - ${{ inputs.tree }}
